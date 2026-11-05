@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sala WebRTC</title>
+    <meta name="description" content="Chamadas de vídeo e chat peer-to-peer direto no navegador usando WebRTC." />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Sala WebRTC</h1>
+      <span id="status" class="status" data-state="idle">Desconectado</span>
+    </header>
+
+    <main>
+      <section id="lobby" class="card lobby">
+        <h2>Entrar em uma sala</h2>
+        <p>
+          Vídeo, áudio e chat vão direto de navegador para navegador (peer-to-peer).
+          O servidor só ajuda os dois lados a se encontrarem.
+        </p>
+        <form id="join-form">
+          <label for="room">Nome da sala</label>
+          <div class="row">
+            <input id="room" name="room" required pattern="[A-Za-z0-9_\-]{1,64}"
+              placeholder="ex.: reuniao-123" autocomplete="off" />
+            <button type="button" id="random-room" class="secondary">Gerar</button>
+          </div>
+          <label class="check">
+            <input type="checkbox" id="with-video" checked /> Câmera
+          </label>
+          <label class="check">
+            <input type="checkbox" id="with-audio" checked /> Microfone
+          </label>
+          <button type="submit">Entrar</button>
+        </form>
+      </section>
+
+      <section id="call" class="call" hidden>
+        <div class="videos">
+          <figure class="tile remote">
+            <video id="remote-video" autoplay playsinline></video>
+            <figcaption id="remote-label">Aguardando outra pessoa…</figcaption>
+          </figure>
+          <figure class="tile local">
+            <video id="local-video" autoplay playsinline muted></video>
+            <figcaption>Você</figcaption>
+          </figure>
+        </div>
+
+        <div class="controls">
+          <button id="toggle-audio" class="secondary" aria-pressed="false">Silenciar</button>
+          <button id="toggle-video" class="secondary" aria-pressed="false">Desligar câmera</button>
+          <button id="share-screen" class="secondary">Compartilhar tela</button>
+          <button id="copy-link" class="secondary">Copiar link</button>
+          <button id="leave" class="danger">Sair</button>
+        </div>
+
+        <aside class="card chat">
+          <h2>Chat</h2>
+          <ol id="messages" aria-live="polite"></ol>
+          <form id="chat-form" class="row">
+            <input id="chat-input" placeholder="Mensagem…" autocomplete="off" disabled />
+            <button type="submit" id="chat-send" disabled>Enviar</button>
+          </form>
+        </aside>
+      </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,161 @@
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --text: #1b1d22;
+  --muted: #5d6470;
+  --border: #d9dde3;
+  --accent: #2563eb;
+  --accent-text: #ffffff;
+  --danger: #dc2626;
+  --ok: #16a34a;
+  --warn: #d97706;
+  --video-bg: #111318;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101216;
+    --surface: #1a1d23;
+    --text: #e8eaee;
+    --muted: #9aa1ad;
+    --border: #2c3139;
+    --accent: #3b82f6;
+    --video-bg: #000000;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.topbar h1 { margin: 0; font-size: 1.15rem; }
+
+.status {
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.status::before {
+  content: "";
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.status[data-state="waiting"]::before { background: var(--warn); }
+.status[data-state="connected"]::before { background: var(--ok); }
+.status[data-state="error"]::before { background: var(--danger); }
+
+main { padding: 1rem; max-width: 1200px; margin: 0 auto; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.lobby { max-width: 480px; margin: 2rem auto; }
+.lobby h2, .chat h2 { margin-top: 0; font-size: 1.05rem; }
+.lobby p { color: var(--muted); }
+
+form { display: grid; gap: 0.6rem; }
+.row { display: flex; gap: 0.5rem; }
+.row input { flex: 1; min-width: 0; }
+label { font-weight: 600; font-size: 0.9rem; }
+.check { font-weight: 400; display: flex; gap: 0.4rem; align-items: center; }
+
+input:not([type="checkbox"]) {
+  font: inherit;
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+button {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: var(--accent);
+  color: var(--accent-text);
+  cursor: pointer;
+}
+
+button.secondary { background: transparent; color: var(--text); border-color: var(--border); }
+button.secondary[aria-pressed="true"] { background: var(--text); color: var(--bg); }
+button.danger { background: var(--danger); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.call {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  grid-template-areas: "videos chat" "controls chat";
+  gap: 1rem;
+}
+
+.call[hidden] { display: none; }
+
+.videos { grid-area: videos; position: relative; }
+.controls { grid-area: controls; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chat { grid-area: chat; display: flex; flex-direction: column; min-height: 320px; max-height: 70vh; }
+
+.tile { margin: 0; position: relative; border-radius: 12px; overflow: hidden; background: var(--video-bg); }
+.tile video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.tile figcaption {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #fff;
+  background: rgb(0 0 0 / 55%);
+}
+
+.remote { aspect-ratio: 16 / 9; }
+.local {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  width: 28%;
+  min-width: 120px;
+  aspect-ratio: 4 / 3;
+  border: 2px solid var(--surface);
+}
+.local video { transform: scaleX(-1); }
+.local.screen video { transform: none; }
+
+#messages { list-style: none; margin: 0 0 0.75rem; padding: 0; flex: 1; overflow-y: auto; display: grid; gap: 0.4rem; align-content: start; }
+#messages li { padding: 0.4rem 0.6rem; border-radius: 8px; background: var(--bg); overflow-wrap: anywhere; }
+#messages li.mine { background: var(--accent); color: var(--accent-text); justify-self: end; }
+#messages li.system { background: transparent; color: var(--muted); font-size: 0.85rem; text-align: center; justify-self: center; }
+
+@media (max-width: 800px) {
+  .call { grid-template-columns: 1fr; grid-template-areas: "videos" "controls" "chat"; }
+  .chat { max-height: none; }
+  .controls button { flex: 1 1 auto; }
+}

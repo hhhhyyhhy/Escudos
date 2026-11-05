@@ -1,0 +1,13 @@
+{
+  "name": "webrtc-site",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Site de chamadas de vídeo e chat peer-to-peer usando WebRTC.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.mjs"
+  }
+}
